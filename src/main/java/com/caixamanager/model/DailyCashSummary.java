@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "daily_cash_summary") // Define o nome da tabela no banco de dados
 @Data
 public class DailyCashSummary {
 
@@ -34,3 +35,4 @@ public class DailyCashSummary {
         return incoming.subtract(outcoming).subtract(otherExpenses != null ? otherExpenses : BigDecimal.ZERO);
     }
 }
+
