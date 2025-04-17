@@ -1,62 +1,46 @@
 package com.caixamanager.controller;
 
+import com.caixamanager.mapper.DTOMapper;
 import com.caixamanager.model.DailyCashSummary;
-import com.caixamanager.repository.DailyCashSummaryRepository;
-import jakarta.validation.Valid;
+import com.caixamanager.service.DailyCashSummaryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/daily-cash-summary")
+@RequestMapping("/daily-cash-summaries")
 public class DailyCashSummaryController {
 
-    private final DailyCashSummaryRepository repository;
+    private final DailyCashSummaryService service;
 
-    public DailyCashSummaryController(DailyCashSummaryRepository repository) {
-        this.repository = repository;
+    public DailyCashSummaryController(DailyCashSummaryService service) {
+        this.service = service;
     }
 
     @GetMapping
-    public List<DailyCashSummary> getAll() {
-        return repository.findAll();
-    }
-
-    @PostMapping
-    public ResponseEntity<DailyCashSummary> create(@Valid @RequestBody DailyCashSummary summary) {
-        return ResponseEntity.ok(repository.save(summary));
+    public ResponseEntity<List<DailyCashSummary>> getAll() {
+        return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DailyCashSummary> getById(@PathVariable Long id) {
-        return repository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<DTOMapper.DailyCashSummaryDTO> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.findById(id));
+    }
+
+    @PostMapping
+    public DailyCashSummary create(@RequestBody DailyCashSummary summary) {
+        return service.create(summary);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DailyCashSummary> update(@PathVariable Long id, @Valid @RequestBody DailyCashSummary updatedSummary) {
-        return repository.findById(id).map(existingSummary -> {
-            updatedSummary.setId(existingSummary.getId());
-            return ResponseEntity.ok(repository.save(updatedSummary));
-        }).orElse(ResponseEntity.notFound().build());
+    public DailyCashSummary update(@PathVariable Long id, @RequestBody DailyCashSummary summary) {
+        return service.update(id, summary);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-    @GetMapping("/net-cash-flow")
-    public BigDecimal getTotalNetCashFlow() {
-        return repository.findAll().stream()
-                .map(DailyCashSummary::getNetCashFlow)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

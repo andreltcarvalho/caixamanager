@@ -1,38 +1,34 @@
 package com.caixamanager.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.With;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "daily_cash_summary") // Define o nome da tabela no banco de dados
+@Table(name = "daily_cash_summary")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@With
 public class DailyCashSummary {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     private LocalDate date;
 
-    @NotNull
-    private String companyName;
-
-    @NotNull
-    private BigDecimal incoming;
-
-    @NotNull
-    private BigDecimal outcoming;
-
-    private BigDecimal otherExpenses;
-
-    @Transient
-    public BigDecimal getNetCashFlow() {
-        return incoming.subtract(outcoming).subtract(otherExpenses != null ? otherExpenses : BigDecimal.ZERO);
-    }
+    @ManyToMany
+    @JoinTable(
+            name = "expense_daily_cash_summary",
+            joinColumns = @JoinColumn(name = "daily_cash_summary_id"),
+            inverseJoinColumns = @JoinColumn(name = "expense_id")
+    )
+    private Set<Expense> expenses = new HashSet<>();
 }
 

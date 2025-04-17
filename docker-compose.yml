@@ -18,26 +18,26 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: caixamanager-app
-    ports:
-      - "8080:8080"
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/caixadb
-      SPRING_DATASOURCE_USERNAME: caixauser
-      SPRING_DATASOURCE_PASSWORD: caixapassword
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+#TODO: DESCOMENTAR
+#  app:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    container_name: caixamanager-app
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      db:
+#        condition: service_healthy
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/caixadb
+#      SPRING_DATASOURCE_USERNAME: caixauser
+#      SPRING_DATASOURCE_PASSWORD: caixapassword
+#    healthcheck:
+#      test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
 
 volumes:
   postgres_data:
