@@ -1,5 +1,6 @@
 package com.caixamanager.controller;
 
+import com.caixamanager.dto.CreateExpenseDTO;
 import com.caixamanager.model.Expense;
 import com.caixamanager.service.ExpenseService;
 import org.springframework.http.ResponseEntity;
@@ -46,5 +47,11 @@ public class ExpenseController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         expenseService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/summary")
+    public ResponseEntity<Expense> getSummary(@RequestBody CreateExpenseDTO createExpenseDTO) {
+        Expense summary = expenseService.createExpenses(createExpenseDTO);
+        return ResponseEntity.ok(summary);
     }
 }

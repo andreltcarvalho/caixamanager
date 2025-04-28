@@ -26,6 +26,9 @@ public class Expense {
     @NotNull
     private BigDecimal amount;
 
+    @NotNull
+    private BigDecimal exchange;
+
     private String description;
 
     @ManyToOne

@@ -7,7 +7,6 @@ import com.caixamanager.model.Expense;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Utility class for mapping model objects to Data Transfer Objects (DTOs).

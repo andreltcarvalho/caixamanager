@@ -1,20 +1,21 @@
 package com.caixamanager.service;
 
+import com.caixamanager.dto.CreateExpenseDTO;
+import com.caixamanager.mapper.ExpenseDTOMapper;
 import com.caixamanager.model.Expense;
 import com.caixamanager.repository.ExpenseRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class ExpenseService {
 
     private final ExpenseRepository repository;
-
-    public ExpenseService(ExpenseRepository repository) {
-        this.repository = repository;
-    }
+    private final ExpenseDTOMapper expenseDTOMapper;
 
     public List<Expense> findAll() {
         return repository.findAll();
@@ -35,5 +36,10 @@ public class ExpenseService {
 
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    public Expense createExpenses(CreateExpenseDTO createExpenseDTO) {
+        Expense expense = expenseDTOMapper.fromDTO(createExpenseDTO);
+        return repository.save(expense);
     }
 }

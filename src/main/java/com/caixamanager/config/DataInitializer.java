@@ -31,13 +31,14 @@ public class DataInitializer implements CommandLineRunner {
 
         // Cria empresa padrão
         Company company = new Company();
-        company.setName("Default Company");
+        company.setName("gardenia");
         companyService.create(company);
         System.out.println("Empresa criada: " + company.getName());
 
         // Cria despesa associada à empresa
         Expense expense = new Expense();
         expense.setAmount(new BigDecimal("100.00"));
+        expense.setExchange(new BigDecimal("100.00"));
         expense.setDescription("Despesa inicial");
         expense.setCompany(company);
         expense = expenseService.create(expense);

@@ -36,4 +36,9 @@ public class CompanyService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    public Company findByName(String name) {
+        return repository.findByName(name).orElseThrow(() ->
+                new RuntimeException("Company not found"));
+    }
 }
